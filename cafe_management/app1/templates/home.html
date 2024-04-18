@@ -7,11 +7,30 @@
 </head>
 <body>
     <h1>Welcome to our website</h1>
+    {% if error_message %}
+            <p>{{ error_message }}</p>
+    {% endif %}
     {% if is_authenticated %}
+            <h2>Menu Items:qw</h2>
+            <ul>
+            {% for menu_item in menu_items %}
+                    <li>{{ menu_item.menu_item_name }}</li>
+                    <p>Category: {{ menu_item.category }}</p>
+                    <p>Description: {{ menu_item.description }}</p>
+                    <p>Price: {{ menu_item.price }}</p>
+                    <p>Image: <img src="{{ menu_item.menu_item_image }}" alt="Menu Item Image"></p>
+                {% endfor %}
+               
+            </ul>
+        
         <a href="{% url 'logout' %}">Logout</a>
     {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Signup</a>
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Signup</a>
+        {% endif %}
     {% endif %}
 </body>
 </html>

@@ -1,14 +1,37 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import Clerk
+from .models import Clerk,MenuItem
+
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
-
 def home(request):
-    is_authenticated = request.user.is_authenticated and hasattr(request.user, 'clerk')
-    return render(request, 'home.html', {'is_authenticated': is_authenticated})
+    is_authenticated = request.user.is_authenticated
+    is_clerk = hasattr(request.user, 'clerk')
+
+    # Check if login failed due to wrong password
+    if request.method == 'POST' and not is_authenticated:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            error_message = "Invalid username or password."
+            return render(request, 'home.html', {'error_message': error_message})
+
+    # Check if user is not a clerk
+    if not is_clerk:
+        error_message = "You need to be a clerk to access this page."
+        return render(request, 'home.html', {'error_message': error_message})
+
+    menu_items = MenuItem.objects.all()  # Retrieve all menu items
+
+    return render(request, 'home.html', {'is_authenticated': is_authenticated, 'menu_items': menu_items})
+
+
+
+
+
 
 def login_view(request):
     if request.method == 'POST':
