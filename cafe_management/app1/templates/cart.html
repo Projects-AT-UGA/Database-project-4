@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+</head>
+<body>
+    <h1>Cart</h1>
+    <a href="{% url 'home' %}">Home</a>
+
+    <form action="{% url 'update_cart' %}" method="POST">
+        {% csrf_token %}
+        <ul>
+            {% if cart_items %}
+                <!-- Loop through items in the cart -->
+                {% for item in cart_items.contains_set.all %}
+                    <li>{{ item.menu_item.menu_item_name }} - Quantity: {{ item.quantity }}</li>
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <input type="number" name="quantity_{{ item.id }}" value="{{ item.quantity }}">
+                {% endfor %}
+            {% else %}
+                <p>Your cart is empty.</p>
+            {% endif %}
+        </ul>
+
+        <!-- Customer Information -->
+        <label for="customer_user_name">Customer Name:</label>
+        <input type="text" id="customer_user_name" name="customer_user_name" value="{{ cart_items.customer_user_name }}">
+        <label for="customer_mobile_number">Customer Mobile Number:</label>
+        <input type="text" id="customer_mobile_number" name="customer_mobile_number" value="{{ cart_items.customer_mobile_number }}">
+
+        <input type="submit" value="Update Cart">
+    </form>
+</body>
+</html>

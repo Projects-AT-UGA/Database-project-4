@@ -20,8 +20,8 @@ class MenuItem(models.Model):
 
 class Cart(models.Model):
     clerk = models.ForeignKey(Clerk, on_delete=models.CASCADE)
-    customer_name = models.CharField(max_length=100)
-    customer_mobile_number = models.CharField(max_length=15)
+    customer_user_name = models.CharField(max_length=100, null=True)
+    customer_mobile_number = models.CharField(max_length=15, null=True)
     menu_items = models.ManyToManyField(MenuItem, through='Contains')
 
     def __str__(self):
