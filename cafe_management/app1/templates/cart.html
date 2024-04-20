@@ -33,9 +33,9 @@
     </form>
 
     <!-- Checkout Button -->
-    <form action="{% url 'checkout' %}" method="POST">
+    <form id="checkout-form" action="{% url 'checkout' %}" method="POST">
         {% csrf_token %}
-        <button id="checkout-btn" type="submit">Checkout</button>
+        <button id="checkout-btn" type="submit" {% if not cart_items %}disabled{% endif %}>Checkout</button>
     </form>
 
     <script>
@@ -48,6 +48,13 @@
         var quantityFields = document.getElementsByClassName('quantity-field');
         for (var i = 0; i < quantityFields.length; i++) {
             quantityFields[i].addEventListener('input', updateCart);
+        }
+
+        // Check if cart is empty and enable/disable checkout button accordingly
+        var cartItemsExist = Boolean(document.getElementsByClassName('quantity-field').length);
+        var checkoutButton = document.getElementById('checkout-btn');
+        if (!cartItemsExist) {
+            checkoutButton.disabled = true;
         }
     </script>
 </body>
