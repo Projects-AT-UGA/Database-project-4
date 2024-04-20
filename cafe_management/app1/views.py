@@ -147,6 +147,8 @@ def checkout(request):
                 return redirect('order_confirmation', order_id=order.id)
     return render(request, 'checkout.html', {'total_payment': total_payment})
 
+
+
 def calculate_total_payment(cart):
     total_payment = 0
     if cart:
@@ -179,3 +181,15 @@ def order_confirmation(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     ordered_items = OrderedItem.objects.filter(order=order)
     return render(request, 'order_confirmation.html', {'order': order, 'ordered_items': ordered_items})
+
+
+
+def order_list(request):
+    orders = Order.objects.all()
+    return render(request, 'order_list.html', {'orders': orders})
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    ordered_items = OrderedItem.objects.filter(order=order)
+    payment = Payment.objects.filter(order=order).first()
+    return render(request, 'order_detail.html', {'order': order, 'ordered_items': ordered_items, 'payment': payment})

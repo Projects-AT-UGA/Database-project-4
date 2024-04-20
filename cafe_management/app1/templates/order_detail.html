@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Detail</title>
+</head>
+<body>
+    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
+    <h1>Order Detail - {{ order.id }}</h1>
+    <h2>Ordered Items:</h2>
+    <ul>
+    {% for item in ordered_items %}
+        <li>{{ item.ordered_item_name }} - Quantity: {{ item.quantity }} - Price: {{ item.price }}</li>
+    {% empty %}
+        <li>No items ordered.</li>
+    {% endfor %}
+    </ul>
+    <h2>Payment Details:</h2>
+    <p>Total Payment: {{ payment.total_payment }}</p>
+    <p>Payment Type: {{ payment.payment_type }}</p>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order List</title>
+</head>
+<body>
+    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
+    <h1>Order List</h1>
+    <ul>
+    {% for order in orders %}
+        <li><a href="{% url 'order_detail' order.id %}">Order #{{ order.id }}</a></li>
+    {% empty %}
+        <li>No orders available.</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
