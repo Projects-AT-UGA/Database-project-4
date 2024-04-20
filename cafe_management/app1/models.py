@@ -40,7 +40,8 @@ class Order(models.Model):
     clerk = models.ForeignKey(Clerk, on_delete=models.CASCADE)
     ordered_date = models.DateTimeField(auto_now_add=True)
     payment = models.OneToOneField('Payment', on_delete=models.CASCADE, null=True, blank=True, related_name='order_payment')
-
+    customer_user_name = models.CharField(max_length=100, null=True)
+    customer_mobile_number = models.CharField(max_length=15, null=True)
     def __str__(self):
         return f"Order by {self.clerk.user.username} on {self.ordered_date}"
 

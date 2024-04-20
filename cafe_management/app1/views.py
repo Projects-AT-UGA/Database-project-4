@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import Clerk,MenuItem,Cart, Contains
+from .models import Clerk,MenuItem,Cart, Contains, Order, OrderedItem,Payment
 
 
 from django.contrib.auth.decorators import login_required
@@ -130,3 +130,52 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+
+# views.py
+
+
+def checkout(request):
+    cart = Cart.objects.filter(clerk__user=request.user).first()
+    total_payment = calculate_total_payment(cart)
+    if request.method == 'POST':
+        payment_type = request.POST.get('payment_type')
+        if payment_type and total_payment:
+            order = create_order(cart, total_payment, payment_type)
+            if order:
+                clear_cart(cart)
+                return redirect('order_confirmation', order_id=order.id)
+    return render(request, 'checkout.html', {'total_payment': total_payment})
+
+def calculate_total_payment(cart):
+    total_payment = 0
+    if cart:
+        for contains_item in cart.contains_set.all():
+            total_payment += contains_item.menu_item.price * contains_item.quantity
+    return total_payment
+
+def create_order(cart, total_payment, payment_type):
+    if cart:
+        clerk = cart.clerk
+        customer_user_name = cart.customer_user_name
+        customer_mobile_number = cart.customer_mobile_number
+        
+        order = Order.objects.create(clerk=clerk,  
+                                     customer_user_name=customer_user_name, customer_mobile_number=customer_mobile_number)
+        for contains_item in cart.contains_set.all():
+            OrderedItem.objects.create(order=order, ordered_item_name=contains_item.menu_item.menu_item_name, 
+                                        category=contains_item.menu_item.category, price=contains_item.menu_item.price, 
+                                        quantity=contains_item.quantity)
+        payment=Payment.objects.create(order=order,total_payment=total_payment, payment_type=payment_type)
+        order.payment_id=payment.id
+        order.save()
+        return order
+    return None
+
+def clear_cart(cart):
+    if cart:
+        cart.contains_set.all().delete()
+def order_confirmation(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    ordered_items = OrderedItem.objects.filter(order=order)
+    return render(request, 'order_confirmation.html', {'order': order, 'ordered_items': ordered_items})

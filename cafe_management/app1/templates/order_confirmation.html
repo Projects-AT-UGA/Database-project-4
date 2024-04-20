@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+</head>
+<body>
+    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
+    <h1>Order Confirmation</h1>
+    <p>Order ID: {{ order.id }}</p>
+    <p>Ordered Date: {{ order.ordered_date }}</p>
+    <p>Total Payment: {{ order.payment.total_payment }}</p>
+    <p>Payment Type: {{ order.payment.payment_type }}</p>
+
+    <h2>Ordered Items</h2>
+    <ul>
+        {% for ordered_item in order.ordered_items.all %}
+            <li>
+                {{ ordered_item.ordered_item_name }} - 
+                Quantity: {{ ordered_item.quantity }} - 
+                Price: {{ ordered_item.price }} - 
+                Category: {{ ordered_item.category }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

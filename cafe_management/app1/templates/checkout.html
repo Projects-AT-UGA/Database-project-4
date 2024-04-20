@@ -1,0 +1,24 @@
+<!-- checkout.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
+    <h1>Checkout</h1>
+    <p>Total Payment: {{ total_payment }}</p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label for="payment_type">Payment Type:</label>
+        <select name="payment_type" id="payment_type">
+            <option value="card">Card</option>
+            <option value="cash">Cash</option>
+        </select>
+        <button type="submit">Pay</button>
+    </form>
+</body>
+</html>

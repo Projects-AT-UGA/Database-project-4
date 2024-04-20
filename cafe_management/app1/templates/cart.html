@@ -6,8 +6,9 @@
     <title>Cart</title>
 </head>
 <body>
+    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
     <h1>Cart</h1>
-    <a href="{% url 'home' %}">Home</a>
+
 
     <form action="{% url 'update_cart' %}" method="POST">
         {% csrf_token %}
@@ -15,9 +16,11 @@
             {% if cart_items %}
                 <!-- Loop through items in the cart -->
                 {% for item in cart_items.contains_set.all %}
+                    <p>Image: <img src="{{ item.menu_item.menu_item_image }}" alt="Menu Item Image"></p>
                     <li>{{ item.menu_item.menu_item_name }} - Quantity: {{ item.quantity }}</li>
                     <input type="hidden" name="item_id" value="{{ item.id }}">
                     <input type="number" name="quantity_{{ item.id }}" value="{{ item.quantity }}">
+                    
                 {% endfor %}
             {% else %}
                 <p>Your cart is empty.</p>
@@ -31,6 +34,11 @@
         <input type="text" id="customer_mobile_number" name="customer_mobile_number" value="{{ cart_items.customer_mobile_number }}">
 
         <input type="submit" value="Update Cart">
+    </form>
+
+    <!-- Checkout Button -->
+    <form action="{% url 'checkout' %}" method="GET">
+        <button type="submit">Checkout</button>
     </form>
 </body>
 </html>

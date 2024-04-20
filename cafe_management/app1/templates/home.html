@@ -6,7 +6,10 @@
     <title>Home</title>
 </head>
 <body>
+    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
     <h1>Welcome to our website</h1>
+    <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'cart' %}">Cart</a>
     {% if error_message %}
             <p>{{ error_message }}</p>
     {% endif %}
@@ -28,8 +31,7 @@
                
             </ul>
         
-        <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'cart' %}">Cart</a> <!-- Add this line for the Cart button -->
+        
 
     {% else %}
         <a href="{% url 'login' %}">Login</a>
