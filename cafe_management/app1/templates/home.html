@@ -17,7 +17,7 @@
         {% if is_authenticated %}
             <a href="{% url 'logout' %}" class="logout-button">Logout</a>
             <a href="{% url 'checkout' %}">Checkout</a>
-            {% comment %} <a href="{% url 'order_list' %}" class="order-history-button">Order History</a> {% endcomment %}
+            <a href="{% url 'order_list' %}" class="order-history-button">Order History</a>
             <a href="{% url 'view_cart' %}" class="new-order-button">View My Cart</a>
             <h2 class="menu-items-heading">Menu Items:</h2>
             <ul class="menu-items-list">

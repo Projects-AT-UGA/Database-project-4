@@ -10,8 +10,9 @@
     <h1>Order Detail - {{ order.id }}</h1>
     <h2>Ordered Items:</h2>
     <ul>
+    <h2>Order ID: {{ order.id }}</h2>    
     {% for item in ordered_items %}
-        <li>Order ID: {{ order.id }}<br> Item_name: {{ item.menu_item.menu_item_name  }} - Quantity: {{ item.quantity }}</li>
+        <li><br> Item Name: {{ item.menu_item.menu_item_name  }} - Quantity: {{ item.quantity }}</li>
     {% empty %}
         <li>No items ordered.</li>
     {% endfor %}

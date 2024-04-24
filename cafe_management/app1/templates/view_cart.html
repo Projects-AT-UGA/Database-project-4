@@ -40,14 +40,22 @@
             .then(response => {
                 if (response.ok) {
                     // If the update was successful, update the quantity displayed on the frontend
+                 
                     return response.json();
+
                 } else {
                     console.error('Failed to update quantity');
                 }
             })
             .then(data => {
+                
+
                 // Update the quantity displayed on the frontend
                 document.getElementById('quantity_' + itemId).textContent = data.quantity;
+                if(data.quantity<=0){
+                    location.reload();
+                }
+            
             })
             .catch(error => {
                 console.error('Error:', error);

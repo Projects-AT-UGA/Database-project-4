@@ -44,7 +44,7 @@ class Order(models.Model):
 
     clerk = models.ForeignKey(Clerk, on_delete=models.CASCADE)
     ordered_date = models.DateTimeField(auto_now_add=True)
-    payment = models.OneToOneField('Payment', on_delete=models.CASCADE, null=True, blank=True, related_name='order_payment')
+
     status = models.BooleanField(choices=STATUS_CHOICES, default=1)   
 
 
@@ -68,12 +68,12 @@ class Cart(models.Model):
     def __str__(self):
         return f"Cart {self.order_id} - User: {self.user.username}"
 
-class Payment(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='payment_order')
-    total_payment = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_type = models.CharField(max_length=100)
+# class Payment(models.Model):
+#     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='payment_order')
+#     total_payment = models.DecimalField(max_digits=10, decimal_places=2)
+#     payment_type = models.CharField(max_length=100)
 
-    def __str__(self):
-        return f"Payment for order {self.order.id}: {self.total_payment} {self.payment_type}"
+#     def __str__(self):
+#         return f"Payment for order {self.order.id}: {self.total_payment} {self.payment_type}"
 
 

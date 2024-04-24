@@ -229,11 +229,14 @@ def update_quantity(request):
         elif action == 'increment':
             order_item.quantity += 1
 
+        if order_item.quantity<=0:
+            order_item.delete()
+            return JsonResponse({'success': True, 'quantity': 0})
         # Save the changes to the database
         order_item.save()
         print("HERE")
         # Return a JSON response indicating success
-        return JsonResponse({'success': True})
+        return JsonResponse({'success': True, 'quantity': order_item.quantity})
 
     # If the request method is not POST, return a JSON response with an error
     return JsonResponse({'error': 'Invalid request method'})
