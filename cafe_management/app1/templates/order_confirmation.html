@@ -15,12 +15,12 @@
 
     <h2>Ordered Items</h2>
     <ul>
-        {% for ordered_item in order.ordered_items.all %}
+        {% for ordered_item in ordered_items %}
             <li>
-                {{ ordered_item.ordered_item_name }} - 
+                {{ ordered_item.menu_item.menu_item_name }} - 
                 Quantity: {{ ordered_item.quantity }} - 
-                Price: {{ ordered_item.price }} - 
-                Category: {{ ordered_item.category }}
+                Price: {{ ordered_item.menu_item.price }} - 
+                Category: {{ ordered_item.menu_item.category }}
             </li>
         {% endfor %}
     </ul>

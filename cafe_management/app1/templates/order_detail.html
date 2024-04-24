@@ -7,11 +7,12 @@
 </head>
 <body>
     <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
-    <h1>Order Detail - {{ order.id }}</h1>
+    <h2><a href="{% url 'order_list' %}">Orders</a></h2>
+    <h3>Order Detail - {{ order.id }}</h3>
     <h2>Ordered Items:</h2>
     <ul>
     {% for item in ordered_items %}
-        <li>{{ item.ordered_item_name }} - Quantity: {{ item.quantity }} - Price: {{ item.price }}</li>
+        <li>{{ item.menu_item.menu_item_name }} - Quantity: {{ item.quantity }} - Price: {{ item.menu_item.price }}</li>
     {% empty %}
         <li>No items ordered.</li>
     {% endfor %}

@@ -45,17 +45,25 @@ class Order(models.Model):
     def __str__(self):
         return f"Order by {self.clerk.user.username} on {self.ordered_date}"
 
-
-class OrderedItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='ordered_items')
-    ordered_item_name = models.CharField(max_length=100)
-    category = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+class OrderContains(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    ordered_item_image = models.URLField(blank=True)  # New field for image link
 
     def __str__(self):
-        return f"{self.ordered_item_name} in order {self.order.id}"
+        return f"{self.order.customer_user_name}'s order contains {self.quantity} {self.menu_item.menu_item_name}"
+
+
+# class OrderedItem(models.Model):
+#     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='ordered_items')
+#     ordered_item_name = models.CharField(max_length=100)
+#     category = models.CharField(max_length=100)
+#     price = models.DecimalField(max_digits=10, decimal_places=2)
+#     quantity = models.PositiveIntegerField()
+#     ordered_item_image = models.URLField(blank=True)  # New field for image link
+
+#     def __str__(self):
+#         return f"{self.ordered_item_name} in order {self.order.id}"
 
 class Payment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='payment_order')
