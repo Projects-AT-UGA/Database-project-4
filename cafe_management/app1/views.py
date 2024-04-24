@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.contrib import messages
+import json
 
 
 def home(request):
@@ -162,6 +163,14 @@ def view_cart(request):
 
 
 
+def order_list(request):
+    orders = Order.objects.all()
+    return render(request, 'order_list.html', {'orders': orders})
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    ordered_items = OrderItem.objects.filter(order=order)
+    return render(request, 'order_detail.html', {'order': order, 'ordered_items': ordered_items})
 
 
 
@@ -201,9 +210,17 @@ def logout_view(request):
 
 def update_quantity(request):
     if request.method == 'POST':
-        item_id = request.POST.get('item_id')
-        action = request.POST.get('action')
-        print(request.POST.get_query_set())
+        print("+_+_+_")
+        print(request)
+        #item_id = request.POST.get('item_id')
+        #item_id =1
+        #action = request.POST.get('action')
+        #print(request.POST.get_query_set())
+
+        payload = json.loads(request.body)  # Load JSON data from the body
+        item_id = payload.get("item_id")
+        action = payload.get("action")
+
         # Retrieve the cart item from the database
         # order = Order.objects.get(pk=cart.order_id)
         print(item_id)
@@ -266,12 +283,5 @@ def update_quantity(request):
 
 
 
-# def order_list(request):
-#     orders = Order.objects.all()
-#     return render(request, 'order_list.html', {'orders': orders})
 
-# def order_detail(request, order_id):
-#     order = get_object_or_404(Order, pk=order_id)
-#     ordered_items = OrderedItem.objects.filter(order=order)
-#     payment = Payment.objects.filter(order=order).first()
-#     return render(request, 'order_detail.html', {'order': order, 'ordered_items': ordered_items, 'payment': payment})
+
