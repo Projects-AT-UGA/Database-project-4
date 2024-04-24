@@ -210,14 +210,8 @@ def logout_view(request):
 
 def update_quantity(request):
     if request.method == 'POST':
-        print("+_+_+_")
-        print(request)
-        #item_id = request.POST.get('item_id')
-        #item_id =1
-        #action = request.POST.get('action')
-        #print(request.POST.get_query_set())
 
-        payload = json.loads(request.body)  # Load JSON data from the body
+        payload = json.loads(request.body)
         item_id = payload.get("item_id")
         action = payload.get("action")
 
