@@ -1,0 +1,51 @@
+/* Navbar */
+.navbar {
+    background-color: #007bff; /* Navbar background color */
+    color: #333; /* Text color */
+    padding: 10px; /* Padding around the navbar */
+    display: flex; /* Use flexbox layout */
+    justify-content: space-between; /* Align items with space between them */
+    align-items: center; /* Align items vertically in the center */
+}
+
+/* Navbar Brand */
+.navbar-brand {
+    font-size: 24px; /* Font size of the brand text */
+    text-decoration: none; /* Remove underline from the brand text */
+    font-family: 'Arial', sans-serif; /* Use a specific font family */
+    font-weight: bold; /* Make the text bold */
+    text-transform: uppercase; /* Transform text to uppercase */
+    letter-spacing: 1px; /* Add letter spacing for better readability */
+    color: #fff; /* White color for the text */
+    padding: 10px 20px; /* Padding around the brand text */
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.4) 100%); /* Gradient background */
+    -webkit-background-clip: text; /* Clip text to the background */
+    background-clip: text; /* Clip text to the background */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Add shadow effect */
+}
+
+
+/* Navbar Items */
+.navbar-nav {
+    list-style: none; /* Remove bullet points from the list */
+    display: flex; /* Use flexbox layout for items */
+}
+
+/* Navbar Item */
+.nav-item {
+    margin-right: 10px; /* Margin between navbar items */
+}
+
+/* Navbar Link */
+.nav-link {
+    color: #fff; /* Text color of navbar links */
+    text-decoration: none; /* Remove underline from the links */
+    padding: 5px 10px; /* Padding around the links */
+    border-radius: 5px; /* Add rounded corners */
+}
+
+/* Navbar Link Hover */
+.nav-link:hover {
+    background-color: #0056b3; /* Background color on hover */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+}

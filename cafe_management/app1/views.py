@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import Clerk,MenuItem,Cart, Contains, Order, OrderedItem,Payment
+from .models import Clerk
+# from .models import MenuItem,Cart, Contains, Order, OrderedItem,Payment
 
 
 from django.contrib.auth.decorators import login_required
@@ -27,72 +28,72 @@ def home(request):
         error_message = "You need to be a clerk to access this page."
         return render(request, 'home.html', {'error_message': error_message})
 
-    menu_items = MenuItem.objects.all()  # Retrieve all menu items
+    # menu_items = MenuItem.objects.all()  # Retrieve all menu items
 
-    return render(request, 'home.html', {'is_authenticated': is_authenticated, 'menu_items': menu_items})
-
-
+    return render(request, 'home.html', {'is_authenticated': is_authenticated, 'menu_items': None})
 
 
 
 
-@login_required
-def update_cart(request):
-    if request.method == 'POST':
-        # Retrieve customer information from the form
-        customer_user_name = request.POST.get('customer_user_name')
-        customer_mobile_number = request.POST.get('customer_mobile_number')
-
-        # Update customer information in the associated cart object
-        clerk = request.user.clerk
-        cart = Cart.objects.filter(clerk=clerk).first()
-        if cart:
-            cart.customer_user_name = customer_user_name
-            cart.customer_mobile_number = customer_mobile_number
-            cart.save()
-
-        # Loop through all POST data to update quantities of items in the cart
-        for key, value in request.POST.items():
-            if key.startswith('quantity_'):
-                item_id = key.split('_')[1]
-                cart_item = get_object_or_404(Contains, pk=item_id)
-                cart_item.quantity = value
-                cart_item.save()
-
-    # Redirect back to the cart page after updating the quantities and customer information
-    return redirect('cart')
 
 
+# @login_required
+# def update_cart(request):
+#     if request.method == 'POST':
+#         # Retrieve customer information from the form
+#         customer_user_name = request.POST.get('customer_user_name')
+#         customer_mobile_number = request.POST.get('customer_mobile_number')
+
+#         # Update customer information in the associated cart object
+#         clerk = request.user.clerk
+#         cart = Cart.objects.filter(clerk=clerk).first()
+#         if cart:
+#             cart.customer_user_name = customer_user_name
+#             cart.customer_mobile_number = customer_mobile_number
+#             cart.save()
+
+#         # Loop through all POST data to update quantities of items in the cart
+#         for key, value in request.POST.items():
+#             if key.startswith('quantity_'):
+#                 item_id = key.split('_')[1]
+#                 cart_item = get_object_or_404(Contains, pk=item_id)
+#                 cart_item.quantity = value
+#                 cart_item.save()
+
+#     # Redirect back to the cart page after updating the quantities and customer information
+#     return redirect('cart')
 
 
-@login_required
-def add_to_cart(request, menu_item_id):
-    menu_item = get_object_or_404(MenuItem, pk=menu_item_id)
-    clerk = request.user.clerk
 
-    # Check if a cart exists for the clerk, otherwise create a new cart
-    cart, created = Cart.objects.get_or_create(clerk=clerk)
 
-    # Check if the menu item already exists in the cart
-    existing_item = cart.contains_set.filter(menu_item=menu_item).first()
+# @login_required
+# def add_to_cart(request, menu_item_id):
+#     menu_item = get_object_or_404(MenuItem, pk=menu_item_id)
+#     clerk = request.user.clerk
 
-    if existing_item:
-        # If the item exists, increase its quantity
-        existing_item.quantity += 1
-        existing_item.save()
-        messages.success(request, f"{menu_item.menu_item_name} quantity increased in cart.")
-    else:
-        # If the item does not exist, add it to the cart with quantity 1
-        new_item = Contains.objects.create(cart=cart, menu_item=menu_item, quantity=1)
-        messages.success(request, f"{menu_item.menu_item_name} added to cart.")
+#     # Check if a cart exists for the clerk, otherwise create a new cart
+#     cart, created = Cart.objects.get_or_create(clerk=clerk)
 
-    return redirect('home')
+#     # Check if the menu item already exists in the cart
+#     existing_item = cart.contains_set.filter(menu_item=menu_item).first()
 
-@login_required
-def cart(request):
-    clerk = request.user.clerk
-    cart_items = Cart.objects.filter(clerk=clerk).first()
-    return render(request, 'cart.html', {'cart_items': cart_items})
+#     if existing_item:
+#         # If the item exists, increase its quantity
+#         existing_item.quantity += 1
+#         existing_item.save()
+#         messages.success(request, f"{menu_item.menu_item_name} quantity increased in cart.")
+#     else:
+#         # If the item does not exist, add it to the cart with quantity 1
+#         new_item = Contains.objects.create(cart=cart, menu_item=menu_item, quantity=1)
+#         messages.success(request, f"{menu_item.menu_item_name} added to cart.")
+
+#     return redirect('home')
+
+# @login_required
+# def cart(request):
+#     clerk = request.user.clerk
+#     cart_items = Cart.objects.filter(clerk=clerk).first()
+#     return render(request, 'cart.html', {'cart_items': cart_items})
 
 
 
@@ -132,64 +133,64 @@ def logout_view(request):
     return redirect('home')
 
 
-# views.py
+# # views.py
 
 
-def checkout(request):
-    cart = Cart.objects.filter(clerk__user=request.user).first()
-    total_payment = calculate_total_payment(cart)
-    if request.method == 'POST':
-        payment_type = request.POST.get('payment_type')
-        if payment_type and total_payment:
-            order = create_order(cart, total_payment, payment_type)
-            if order:
-                clear_cart(cart)
-                return redirect('order_confirmation', order_id=order.id)
-    return render(request, 'checkout.html', {'total_payment': total_payment})
+# def checkout(request):
+#     cart = Cart.objects.filter(clerk__user=request.user).first()
+#     total_payment = calculate_total_payment(cart)
+#     if request.method == 'POST':
+#         payment_type = request.POST.get('payment_type')
+#         if payment_type and total_payment:
+#             order = create_order(cart, total_payment, payment_type)
+#             if order:
+#                 clear_cart(cart)
+#                 return redirect('order_confirmation', order_id=order.id)
+#     return render(request, 'checkout.html', {'total_payment': total_payment})
 
 
 
-def calculate_total_payment(cart):
-    total_payment = 0
-    if cart:
-        for contains_item in cart.contains_set.all():
-            total_payment += contains_item.menu_item.price * contains_item.quantity
-    return total_payment
+# def calculate_total_payment(cart):
+#     total_payment = 0
+#     if cart:
+#         for contains_item in cart.contains_set.all():
+#             total_payment += contains_item.menu_item.price * contains_item.quantity
+#     return total_payment
 
-def create_order(cart, total_payment, payment_type):
-    if cart:
-        clerk = cart.clerk
-        customer_user_name = cart.customer_user_name
-        customer_mobile_number = cart.customer_mobile_number
+# def create_order(cart, total_payment, payment_type):
+#     if cart:
+#         clerk = cart.clerk
+#         customer_user_name = cart.customer_user_name
+#         customer_mobile_number = cart.customer_mobile_number
         
-        order = Order.objects.create(clerk=clerk,  
-                                     customer_user_name=customer_user_name, customer_mobile_number=customer_mobile_number)
-        for contains_item in cart.contains_set.all():
-            OrderedItem.objects.create(order=order, ordered_item_name=contains_item.menu_item.menu_item_name, 
-                                        category=contains_item.menu_item.category, price=contains_item.menu_item.price, 
-                                        quantity=contains_item.quantity)
-        payment=Payment.objects.create(order=order,total_payment=total_payment, payment_type=payment_type)
-        order.payment_id=payment.id
-        order.save()
-        return order
-    return None
+#         order = Order.objects.create(clerk=clerk,  
+#                                      customer_user_name=customer_user_name, customer_mobile_number=customer_mobile_number)
+#         for contains_item in cart.contains_set.all():
+#             OrderedItem.objects.create(order=order, ordered_item_name=contains_item.menu_item.menu_item_name, 
+#                                         category=contains_item.menu_item.category, price=contains_item.menu_item.price, 
+#                                         quantity=contains_item.quantity)
+#         payment=Payment.objects.create(order=order,total_payment=total_payment, payment_type=payment_type)
+#         order.payment_id=payment.id
+#         order.save()
+#         return order
+#     return None
 
-def clear_cart(cart):
-    if cart:
-        cart.contains_set.all().delete()
-def order_confirmation(request, order_id):
-    order = get_object_or_404(Order, pk=order_id)
-    ordered_items = OrderedItem.objects.filter(order=order)
-    return render(request, 'order_confirmation.html', {'order': order, 'ordered_items': ordered_items})
+# def clear_cart(cart):
+#     if cart:
+#         cart.contains_set.all().delete()
+# def order_confirmation(request, order_id):
+#     order = get_object_or_404(Order, pk=order_id)
+#     ordered_items = OrderedItem.objects.filter(order=order)
+#     return render(request, 'order_confirmation.html', {'order': order, 'ordered_items': ordered_items})
 
 
 
-def order_list(request):
-    orders = Order.objects.all()
-    return render(request, 'order_list.html', {'orders': orders})
+# def order_list(request):
+#     orders = Order.objects.all()
+#     return render(request, 'order_list.html', {'orders': orders})
 
-def order_detail(request, order_id):
-    order = get_object_or_404(Order, pk=order_id)
-    ordered_items = OrderedItem.objects.filter(order=order)
-    payment = Payment.objects.filter(order=order).first()
-    return render(request, 'order_detail.html', {'order': order, 'ordered_items': ordered_items, 'payment': payment})
+# def order_detail(request, order_id):
+#     order = get_object_or_404(Order, pk=order_id)
+#     ordered_items = OrderedItem.objects.filter(order=order)
+#     payment = Payment.objects.filter(order=order).first()
+#     return render(request, 'order_detail.html', {'order': order, 'ordered_items': ordered_items, 'payment': payment})

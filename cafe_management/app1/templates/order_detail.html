@@ -6,7 +6,7 @@
     <title>Order Detail</title>
 </head>
 <body>
-    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
+    {% include 'navbar.html' %}
     <h1>Order Detail - {{ order.id }}</h1>
     <h2>Ordered Items:</h2>
     <ul>

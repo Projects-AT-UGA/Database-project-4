@@ -6,7 +6,7 @@
     <title>Order List</title>
 </head>
 <body>
-    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
+    {% include 'navbar.html' %}
     <h1>Order List</h1>
     <ul>
     {% for order in orders %}

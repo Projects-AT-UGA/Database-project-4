@@ -1,21 +1,50 @@
+{% load static %}
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" href="{% static '/styles/login_page.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body class="container">
+    {% include 'navbar.html' %}
+    <h1 class="heading">Login</h1>
+    {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+    {% endif %}
+    <form method="post" class="form-container">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required class="input-field"><br>
+        <input type="password" name="password" placeholder="Password" required class="input-field"><br>
+        <input type="submit" value="Login" class="submit-button">
+    </form>
+</body>
+</html> {% endcomment %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="{% static 'styles/login_page.css' %}">
 </head>
-<body>
-    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
-    <h1>Login</h1>
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="submit" value="Login">
-    </form>
+<body class="container">
+    {% include 'navbar.html' %}
+    <div class="login-container">
+        <h1 class="login-heading">Login</h1>
+        {% if error_message %}
+            <p class="login-error-message">{{ error_message }}</p>
+        {% endif %}
+        <form method="post" class="login-form-container">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username" required class="login-input-field"><br>
+            <input type="password" name="password" placeholder="Password" required class="login-input-field"><br>
+            <input type="submit" value="Login" class="login-submit-button">
+        </form>
+    </div>
 </body>
 </html>
+

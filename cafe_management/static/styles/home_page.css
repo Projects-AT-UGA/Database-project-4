@@ -1,0 +1,69 @@
+/* Form Container */
+.form-container {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+.heading {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+}
+
+/* Logout Button */
+.logout-button,
+.order-history-button,
+.new-order-button,
+.login-button,
+.signup-button {
+    display: block;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+/* Logout Button Hover */
+.logout-button:hover,
+.order-history-button:hover,
+.new-order-button:hover,
+.login-button:hover,
+.signup-button:hover {
+    background-color: #0056b3;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #007bff;
+    color: #333;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Add margin-bottom for spacing */
+}
+
+/* Form Container */
+.form-container {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+

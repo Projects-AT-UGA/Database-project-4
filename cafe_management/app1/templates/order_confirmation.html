@@ -6,7 +6,7 @@
     <title>Order Confirmation</title>
 </head>
 <body>
-    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
+    {% include 'navbar.html' %}
     <h1>Order Confirmation</h1>
     <p>Order ID: {{ order.id }}</p>
     <p>Ordered Date: {{ order.ordered_date }}</p>
