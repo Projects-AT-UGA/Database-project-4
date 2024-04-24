@@ -1,69 +1,79 @@
-/* Form Container */
-.form-container {
-    max-width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+
+/* Container */
+.container {
+    max-width: 1200px; /* Maximum width of the container */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px; /* Padding inside the container */
 }
 
 /* Heading */
 .heading {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Error Message */
-.error-message {
-    color: red;
-}
-
-/* Logout Button */
-.logout-button,
-.order-history-button,
-.new-order-button,
-.login-button,
-.signup-button {
-    display: block;
-    background-color: #007bff;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease;
-}
-
-/* Logout Button Hover */
-.logout-button:hover,
-.order-history-button:hover,
-.new-order-button:hover,
-.login-button:hover,
-.signup-button:hover {
-    background-color: #0056b3;
-}
-
-/* Navbar */
-.navbar {
-    background-color: #007bff;
-    color: #333;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px; /* Add margin-bottom for spacing */
+    text-align: center; /* Align text to the center */
+    margin-top: 50px; /* Margin from the top */
 }
 
 /* Form Container */
 .form-container {
-    max-width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff; /* Background color */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+    padding: 20px; /* Padding inside the container */
+    margin-top: 20px; /* Margin from the top */
 }
 
+/* Error Message */
+.error-message {
+    color: red; /* Text color */
+    text-align: center; /* Align text to the center */
+}
+
+/* Menu Items List */
+.menu-items-list {
+    list-style: none; /* Remove default list styles */
+    padding: 0; /* Remove default padding */
+}
+
+/* Menu Item */
+.menu-item {
+    font-weight: bold; /* Bold font weight */
+}
+
+/* Menu Item Info */
+.menu-item-info {
+    margin-bottom: 10px; /* Margin at the bottom */
+}
+
+/* Menu Item Image */
+.menu-item img {
+    max-width: 100%; /* Maximum width of the image */
+    height: auto; /* Auto height */
+    display: block; /* Display as block element */
+    margin-top: 10px; /* Margin at the top */
+    margin-bottom: 10px; /* Margin at the bottom */
+    text-align: center; /* Align image to the center */
+}
+
+/* Login, Signup, Logout Buttons */
+.login-button,
+.signup-button,
+.logout-button {
+    display: block; /* Display as block element */
+    width: 100px; /* Width of the buttons */
+    margin: 0 auto; /* Center the buttons horizontally */
+    text-align: center; /* Align text to the center */
+    padding: 10px; /* Padding inside the buttons */
+    margin-top: 20px; /* Margin from the top */
+    text-decoration: none; /* Remove underline from links */
+    color: #fff; /* Text color */
+    background-color: #007bff; /* Button background color */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Transition effect */
+}
+
+/* Hover effect for buttons */
+.login-button:hover,
+.signup-button:hover,
+.logout-button:hover {
+    background-color: #0056b3; /* Background color on hover */
+}
