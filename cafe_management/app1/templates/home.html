@@ -1,44 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <h1><a href="{% url 'home' %}">Cafe Management</a></h1>
-    <h1>Welcome to our website</h1>
-    
-        
-    {% if error_message %}
-            <p>{{ error_message }}</p>
-    {% endif %}
-    {% if is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'cart' %}">Cart</a>
-        <a href="{% url 'order_list' %}">Orders</a>
-            <h2>Menu Items:</h2>
-            <ul>
-            {% for menu_item in menu_items %}
-                    <li>{{ menu_item.menu_item_name }}</li>
-                    <p>Category: {{ menu_item.category }}</p>
-                    <p>Description: {{ menu_item.description }}</p>
-                    <p>Price: {{ menu_item.price }}</p>
-                    <p>Image: <img src="{{ menu_item.menu_item_image }}" alt="Menu Item Image"></p>
-                    <form action="{% url 'add_to_cart' menu_item.id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="submit" value="Add to Cart">
-                    </form>
-                    
-                {% endfor %}
-               
-            </ul>
-        
-        
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home - Cafe Management{% endblock %}
 
-    {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Signup</a>
-    {% endif %}
-</body>
-</html>
+{% block content %}
+
+{% if error_message %}
+    <p class="error">{{ error_message }}</p>
+{% endif %}
+{% if is_authenticated %}
+    <h2>Menu Items</h2>
+    {% for category, items in menu_categories.items %}
+        <h3>{{ category }}</h3>
+        <div class="menu-grid">
+        {% for menu_item in items %}
+            <div class="menu-item">
+                <h4>{{ menu_item.menu_item_name }}</h4>
+                <img src="{{ menu_item.menu_item_image }}" alt="{{ menu_item.menu_item_name }} Image" class="menu-image">
+                <p class="description">{{ menu_item.description }}</p>
+                <p class="price">Price: ${{ menu_item.price }}</p>
+                <form action="{% url 'add_to_cart' menu_item.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Add to Cart" class="btn-add-to-cart">
+                </form>
+            </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>You need to log in to view the menu.</p>
+{% endif %}
+{% endblock %}
