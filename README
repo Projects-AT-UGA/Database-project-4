@@ -1,4 +1,17 @@
 # Database-project-4
+
+in settings.py change these USER and PASSWORD TO YOUR DATABASE VALUES to run the project
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Cafe',
+        'USER': 'postgres',
+        'PASSWORD': 'asdfadsf',
+        'HOST': 'localhost',   # Or your database host
+        'PORT': '5432',        # Or your database port
+    }
+}
+
 For the Term Project (Database Application with Web Access) a two-page proposal giving a
 detailed description of the application you propose to develop must be submitted before Spring
 Break. The proposal must indicate Web Framework (e.g., SpringBoot, or Play 2), DBMS Access
