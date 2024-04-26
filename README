@@ -1,5 +1,5 @@
 # Database-project-4
-
+use requirements.txt to install the dependencies
 in settings.py change these USER and PASSWORD TO YOUR DATABASE VALUES to run the project
 DATABASES = {
     'default': {
