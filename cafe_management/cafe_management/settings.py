@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Cafe',
         'USER': 'postgres',
-        'PASSWORD': 'Sql@10071999',
+        'PASSWORD': 'Masters2022!',
         'HOST': 'localhost',   # Or your database host
         'PORT': '5432',        # Or your database port
     }
@@ -121,8 +121,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+import os
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'app1/static'),  # Adjust this path if your static directory is located elsewhere
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

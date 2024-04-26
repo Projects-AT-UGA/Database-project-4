@@ -27,14 +27,47 @@ def home(request):
         error_message = "You need to be a clerk to access this page."
         return render(request, 'home.html', {'error_message': error_message})
 
-    menu_items = MenuItem.objects.all()  # Retrieve all menu items
+    # Retrieve all menu items and group them by category
+    menu_items = MenuItem.objects.all().order_by('category')
+    menu_categories = {}
+    for item in menu_items:
+        if item.category in menu_categories:
+            menu_categories[item.category].append(item)
+        else:
+            menu_categories[item.category] = [item]
 
-    return render(request, 'home.html', {'is_authenticated': is_authenticated, 'menu_items': menu_items})
+    return render(request, 'home.html', {'is_authenticated': is_authenticated, 'menu_categories': menu_categories})
 
 
 
 
 
+
+# @login_required
+# def update_cart(request):
+#     if request.method == 'POST':
+#         # Retrieve customer information from the form
+#         customer_user_name = request.POST.get('customer_user_name')
+#         customer_mobile_number = request.POST.get('customer_mobile_number')
+
+#         # Update customer information in the associated cart object
+#         clerk = request.user.clerk
+#         cart = Cart.objects.filter(clerk=clerk).first()
+#         if cart:
+#             cart.customer_user_name = customer_user_name
+#             cart.customer_mobile_number = customer_mobile_number
+#             cart.save()
+
+#         # Loop through all POST data to update quantities of items in the cart
+#         for key, value in request.POST.items():
+#             if key.startswith('quantity_'):
+#                 item_id = key.split('_')[1]
+#                 cart_item = get_object_or_404(Contains, pk=item_id)
+#                 cart_item.quantity = value
+#                 cart_item.save()
+
+#     # Redirect back to the cart page after updating the quantities and customer information
+#     return redirect('cart')
 
 @login_required
 def update_cart(request):
@@ -45,11 +78,10 @@ def update_cart(request):
 
         # Update customer information in the associated cart object
         clerk = request.user.clerk
-        cart = Cart.objects.filter(clerk=clerk).first()
-        if cart:
-            cart.customer_user_name = customer_user_name
-            cart.customer_mobile_number = customer_mobile_number
-            cart.save()
+        cart, created = Cart.objects.get_or_create(clerk=clerk)
+        cart.customer_user_name = customer_user_name
+        cart.customer_mobile_number = customer_mobile_number
+        cart.save()
 
         # Loop through all POST data to update quantities of items in the cart
         for key, value in request.POST.items():
@@ -61,7 +93,6 @@ def update_cart(request):
 
     # Redirect back to the cart page after updating the quantities and customer information
     return redirect('cart')
-
 
 
 
@@ -93,9 +124,6 @@ def cart(request):
     clerk = request.user.clerk
     cart_items = Cart.objects.filter(clerk=clerk).first()
     return render(request, 'cart.html', {'cart_items': cart_items})
-
-
-
 
 
 
@@ -135,17 +163,37 @@ def logout_view(request):
 # views.py
 
 
+# def checkout(request):
+#     cart = Cart.objects.filter(clerk__user=request.user).first()
+#     total_payment = calculate_total_payment(cart)
+#     if request.method == 'POST':
+#         payment_type = request.POST.get('payment_type')
+#         if payment_type and total_payment:
+#             order = create_order(cart, total_payment, payment_type)
+#             if order:
+#                 clear_cart(cart)
+#                 return redirect('order_confirmation', order_id=order.id)
+#     return render(request, 'checkout.html', {'total_payment': total_payment})
 def checkout(request):
+    # Fetch the cart associated with the current user's clerk account
     cart = Cart.objects.filter(clerk__user=request.user).first()
-    total_payment = calculate_total_payment(cart)
+    if not cart:
+        return render(request, 'checkout.html', {'cart_items': None, 'total_payment': 0})
+
+    # Assuming Contains is the through model between Cart and MenuItem
+    cart_items = Contains.objects.filter(cart=cart)  # Retrieve all items in the cart
+    total_payment = sum(item.menu_item.price * item.quantity for item in cart_items)
+
     if request.method == 'POST':
         payment_type = request.POST.get('payment_type')
-        if payment_type and total_payment:
+        if payment_type and total_payment > 0:
+            # Assume create_order and clear_cart are implemented properly
             order = create_order(cart, total_payment, payment_type)
             if order:
                 clear_cart(cart)
                 return redirect('order_confirmation', order_id=order.id)
-    return render(request, 'checkout.html', {'total_payment': total_payment})
+
+    return render(request, 'checkout.html', {'cart_items': cart_items, 'total_payment': total_payment})
 
 
 
@@ -207,10 +255,11 @@ def order_confirmation(request, order_id):
     return render(request, 'order_confirmation.html', {'order': order, 'ordered_items': ordered_items})
 
 
-
+@login_required
 def order_list(request):
     orders = Order.objects.all()
-    return render(request, 'order_list.html', {'orders': orders})
+    is_authenticated = request.user.is_authenticated
+    return render(request, 'order_list.html', {'orders': orders, 'is_authenticated': is_authenticated})
 
 
 def order_detail(request, order_id):
