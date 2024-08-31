@@ -4,13 +4,21 @@ in settings.py change these USER and PASSWORD TO YOUR DATABASE VALUES to run the
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Cafe',
+        'NAME': 'Cafe',   # Or your database name
         'USER': 'postgres',
         'PASSWORD': 'asdfadsf',
         'HOST': 'localhost',   # Or your database host
         'PORT': '5432',        # Or your database port
     }
 }
+cd path_to_your_django_project
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+http://127.0.0.1:8000/
+python manage.py createsuperuser
+http://127.0.0.1:8000/admin/
+
 
 For the Term Project (Database Application with Web Access) a two-page proposal giving a
 detailed description of the application you propose to develop must be submitted before Spring
@@ -34,3 +42,6 @@ Rubric for Final Presentations:
 • Demo Secure Logins (password handling and SQL injection prevention)
 • Demo Database Queries
 • Demo Database Updates and Transactions
+
+
+
